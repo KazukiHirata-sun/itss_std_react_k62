@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import TodoItem from './TodoItem';
+import Input from './Input';
 
 import {getKey} from "../lib/util";
 
 function Todo() {
   const [items, setItems] = React.useState([
     { key: getKey(), text: 'Learn JavaScript', done: false },
-    { key: getKey(), text: 'Learn React', done: false },
+    { key: getKey(), text: 'Learn tReact', done: false },
     { key: getKey(), text: 'Get some good sleep', done: false },
   ]);
   
@@ -20,11 +21,16 @@ function Todo() {
     setItems(newItems);
   };
   
+  const handleAdd = text => {
+    setItems([...items, { key: getKey(), text, done: false }]);
+  };
+  
   return (
     <div className="panel">
       <div className="panel-heading">
         ITSS1 ToDoアプリ
       </div>
+       <Input onAdd={handleAdd} />
        {items.map(item => (
         <TodoItem
           key={item.key}
