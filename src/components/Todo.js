@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import TodoItem from './TodoItem';
 import Input from './Input';
+import Filter from './Filter';
 
 import {getKey} from "../lib/util";
 
@@ -10,6 +11,14 @@ function Todo() {
     { key: getKey(), text: 'Learn tReact', done: false },
     { key: getKey(), text: 'Get some good sleep', done: false },
   ]);
+  
+  const [filter, setFilter] = React.useState('ALL');
+  
+  const displayItems = items.filter(item => {
+    if (filter === 'ALL') return true;
+    if (filter === 'TODO') return !item.done;
+    if (filter === 'DONE') return item.done;
+  });
   
   const handleCheck = checked => {
     const newItems = items.map(item => {
@@ -25,13 +34,19 @@ function Todo() {
     setItems([...items, { key: getKey(), text, done: false }]);
   };
   
+  const handleFilterChange = value => setFilter(value);
+  
   return (
     <div className="panel">
       <div className="panel-heading">
         ITSS1 ToDoアプリ
       </div>
        <Input onAdd={handleAdd} />
-       {items.map(item => (
+       <Filter
+        onChange={handleFilterChange}
+        value={filter}
+      />
+       {displayItems.map(item => (
         <TodoItem
           key={item.key}
           item={item}
@@ -39,7 +54,7 @@ function Todo() {
         />
        ))}
       <div className="panel-block">
-        {items.length} items
+        {displayItems.length} items
       </div>
     </div>
   );
